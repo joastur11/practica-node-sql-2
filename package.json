@@ -1,0 +1,28 @@
+{
+  "name": "practica-node-sql-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joastur11/practica-node-sql-2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joastur11/practica-node-sql-2/issues"
+  },
+  "homepage": "https://github.com/joastur11/practica-node-sql-2#readme",
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "-": "^0.0.1",
+    "express": "^5.2.1"
+  }
+}
