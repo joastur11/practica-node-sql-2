@@ -1,9 +1,8 @@
 import { Router, type Request, type Response } from "express";
+import { register } from "../controllers/auth.controller.js";
 
 const router = Router()
 
-router.post('/', async (req: Request, res: Response) => {  
-  res.send('ok!!!')  
-})
+router.post('/', register )
 
 export default router
