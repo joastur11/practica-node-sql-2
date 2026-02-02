@@ -1,4 +1,4 @@
-# FASE 0 — Base sólida (check rápido)
+## FASE 0 — Base sólida (check rápido)
 
 Antes de auth, asegúrate de tener:
 
