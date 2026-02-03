@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/joastur11/practica-node-sql-2#readme",
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.6",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
