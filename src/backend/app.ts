@@ -2,7 +2,6 @@ import express from 'express'
 import registerRoutes from './routes/register.js'
 import 'dotenv/config'
 
-
 const app = express()
 
 app.use(express.json())
