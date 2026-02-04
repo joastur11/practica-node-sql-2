@@ -1,9 +1,9 @@
 import type { RowDataPacket } from "mysql2";
-import type { User, UserRow }  from "../types.js";
+import type { RegisterUser, LoggedUser, UserRow }  from "../types.js";
 import { pool } from "../db/connections.js";
 import bcrypt from 'bcrypt'
 
-export async function registerService ({email, password, name, surname}: User){
+export async function registerService ({email, password, name, surname}: RegisterUser){
   if(!email || typeof email != "string"){
     throw new Error('invalid email')
   }
@@ -38,7 +38,7 @@ export async function registerService ({email, password, name, surname}: User){
   }
 }
 
-export async function loginService ({ email, password }: User){
+export async function loginService ({ email, password }: LoggedUser){
   if(!email || typeof email != "string"){
     throw new Error('invalid credentials')
   }
