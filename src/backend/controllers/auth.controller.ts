@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { registerService } from "../services/auth.services.js";
+import { loginService, registerService } from "../services/auth.services.js";
 
 export async function register (req: Request, res: Response) {
   try {
@@ -27,9 +27,11 @@ export async function login (req: Request, res: Response) {
   try {
     const { email, password } = req.body
 
-    // await service
+    const userId = await loginService({ email, password })
 
-    return res.status(200).json({ ok: 'Welcome' })
+    // jwt token
+
+    return res.status(200).json({ userId })
  
   } catch (error) {
     console.error('Error en login: ', error)
