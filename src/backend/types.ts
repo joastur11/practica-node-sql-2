@@ -1,3 +1,5 @@
+import type { RowDataPacket } from "mysql2"
+
 export type User = {
   email: string,
   password: string,
@@ -5,7 +7,7 @@ export type User = {
   surname: string
 }
 
-export type UserRow = {
+export interface UserRow extends RowDataPacket {
   user_id: number,
   password_hash: string
 }
