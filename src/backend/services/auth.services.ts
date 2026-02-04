@@ -1,9 +1,9 @@
 import type { RowDataPacket } from "mysql2";
-import type { Register }  from "../types.js";
+import type { User, UserRow }  from "../types.js";
 import { pool } from "../db/connections.js";
 import bcrypt from 'bcrypt'
 
-export async function registerService ({email, password, name, surname}: Register){
+export async function registerService ({email, password, name, surname}: User){
   if(!email || typeof email != "string"){
     throw new Error('invalid email')
   }
@@ -36,4 +36,36 @@ export async function registerService ({email, password, name, surname}: Registe
     console.error('Error fetching user', error)
     throw new Error('Error fetching user')
   }
+}
+
+export async function loginService ({ email, password }: User){
+  if(!email || typeof email != "string"){
+    throw new Error('invalid credentials')
+  }
+  if(!password || typeof password != "string"){
+    throw new Error('invalid credentials')
+  }
+  
+  try {
+    const [rows] = await pool.query<UserRow[]>('SELECT user_id, password_hash FROM users WHERE user_email = ?', [email])
+    if (rows.length === 0){
+      throw new Error('Invalid credentials')
+    }
+
+    const user = rows[0]!
+
+    const { user_id, password_hash } = user
+
+    const loggedPassword = await bcrypt.compare(password, password_hash)
+
+    if (!loggedPassword){
+      throw new Error('Invalid credentials')
+    }
+
+    return user_id
+
+  } catch (error) {
+    console.error('Error fetching user', error)
+    throw new Error('Error fetching user')
+  }  
 }
