@@ -1,10 +1,15 @@
 import type { RowDataPacket } from "mysql2"
 
-export type User = {
+export type RegisterUser = {
   email: string,
   password: string,
   name: string,
   surname: string
+}
+
+export type LoggedUser = {
+  email: string,
+  password: string
 }
 
 export interface UserRow extends RowDataPacket {
