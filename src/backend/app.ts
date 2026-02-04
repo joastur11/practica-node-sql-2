@@ -1,5 +1,6 @@
 import express from 'express'
 import registerRoutes from './routes/register.js'
+import loginRoutes from './routes/login.js'
 import 'dotenv/config'
 
 const app = express()
@@ -11,6 +12,8 @@ app.get('/', (req, res) =>{
 })
 
 app.use('/register', registerRoutes)
+
+app.use('/login', loginRoutes)
 
 const PORT = 1234
 
