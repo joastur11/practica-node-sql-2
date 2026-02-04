@@ -1,13 +1,13 @@
 import type { Request, Response } from "express";
 import { registerService } from "../services/auth.services.js";
 
-export function register (req: Request, res: Response) {
+export async function register (req: Request, res: Response) {
   try {
     const { email, password, name, surname } = req.body
 
-    registerService({ email, password, name, surname })
+    await registerService({ email, password, name, surname })
 
-    return res.status(200).json({ ok: 'todoi ok' })
+    return res.status(201).json({ ok: 'todo ok' })
 
   } catch (error) {
     console.error('error en el registro: ', error)
