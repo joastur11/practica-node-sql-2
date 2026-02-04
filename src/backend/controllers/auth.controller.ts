@@ -14,11 +14,26 @@ export async function register (req: Request, res: Response) {
     
     if (error instanceof Error){
       if (error.message === 'email already in use'){
-        return res.status(409).json ({ error: error.message })
+        return res.status(409).json({ error: error.message })
       }
-      return res.status(400).json ({ error: error.message })
+      return res.status(400).json({ error: error.message })
     }
         
-    return res.status(400).json ({ error: 'Error en el registro' })
+    return res.status(400).json({ error: 'Error en el registro' })
+  }
+}
+
+export async function login (req: Request, res: Response) {
+  try {
+    const { email, password } = req.body
+
+    // await service
+
+    return res.status(200).json({ ok: 'Welcome' })
+ 
+  } catch (error) {
+    console.error('Error en login: ', error)
+
+    return res.status(401).json({ error: 'Error en login' })
   }
 }
