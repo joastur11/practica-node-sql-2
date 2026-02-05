@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { loginService, registerService } from "../services/auth.services.js";
+import { tokenGenerator } from "../utils/jwt.js";
 
 export async function register (req: Request, res: Response) {
   try {
@@ -29,9 +30,9 @@ export async function login (req: Request, res: Response) {
 
     const userId = await loginService({ email, password })
 
-    // jwt token
+    const token = tokenGenerator(userId)
 
-    return res.status(200).json({ userId })
+    return res.status(200).json({ token })
  
   } catch (error) {
     console.error('Error en login: ', error)
