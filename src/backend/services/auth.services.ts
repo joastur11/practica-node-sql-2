@@ -1,5 +1,5 @@
 import type { RowDataPacket } from "mysql2";
-import type { RegisterUser, LoggedUser, UserRow }  from "../types.js";
+import type { RegisterUser, LoggedUser, UserRow }  from "../types/types.js";
 import { pool } from "../db/connections.js";
 import bcrypt from 'bcrypt'
 
