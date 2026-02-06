@@ -24,9 +24,8 @@ export function authMiddleware (req: Request, res: Response, next: NextFunction)
   }
 
   // hasta aca: lee header, saca token y lo verifica
-  // ahora lo chido:
 
-  req.userId = decoded.userId
+  req.userId = decoded.userId // dice que el id que viene en la request, es el mismo que el del token
 
-  next()
+  next()  // funcion de espress, un siga siga
 }
