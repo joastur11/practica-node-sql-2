@@ -1,4 +1,5 @@
 import type { Request, Response } from "express"
+import { profileService } from "../services/profile.services.js"
 
 export async function profile (req: Request, res: Response){
   try {
@@ -8,7 +9,9 @@ export async function profile (req: Request, res: Response){
       return res.status(401).json({ error: 'Error de perfil' })
     }
 
-    return res.status(200).json(`Hola rey, tu user id es: ${userId}` )
+    const userData = await profileService(userId)
+
+    return res.status(200).json(userData)
   } catch (error){
     console.error ('Invalid user token', error)
 
