@@ -69,3 +69,20 @@ export async function loginService ({ email, password }: LoggedUser){
     throw new Error('Error fetching user')
   }  
 }
+
+export async function refreshService (userId: number, refreshToken: string) {
+  try {
+    const expiresAt = new Date()
+    expiresAt.setDate(expiresAt.getDate() + 15)
+
+    const [result] = await pool.query('INSERT INTO refresh_tokens (user_id, token, expires_at) VALUES (?, ?, ?)', [userId, refreshToken, expiresAt])
+
+    const insertId = (result as any).insertId
+
+    return insertId
+    
+  } catch (error) {
+    console.error('Error inserting refresh token', error)
+    throw new Error('Error inserting refresh token')
+  }
+}
