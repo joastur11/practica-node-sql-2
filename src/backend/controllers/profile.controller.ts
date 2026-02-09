@@ -6,7 +6,7 @@ export async function profile (req: Request, res: Response){
     const userId = req.userId
 
     if (!userId){
-      return res.status(401).json({ error: 'Error de perfil' })
+      return res.status(404).json({ error: 'User not found' })
     }
 
     const userData = await profileService(userId)
@@ -15,6 +15,6 @@ export async function profile (req: Request, res: Response){
   } catch (error){
     console.error ('Invalid user token', error)
 
-    return res.status(401).json({ error: 'Error de perfil' })
+    return res.status(404).json({ error: 'User not found' })
   }
 }
