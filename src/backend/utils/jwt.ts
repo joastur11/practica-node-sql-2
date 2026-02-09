@@ -4,7 +4,7 @@ export function tokenGenerator(userId: number) {
   const token = jwt.sign(
     { userId },
     process.env.JWT_SECRET!,
-    { expiresIn: '1h' }
+    { expiresIn: '15m' }
   )
 
   return token
