@@ -70,7 +70,7 @@ export async function loginService ({ email, password }: LoggedUser){
   }  
 }
 
-export async function refreshService (userId: number, refreshToken: string) {
+export async function insertRefreshService (userId: number, refreshToken: string) {
   try {
     const expiresAt = new Date()
     expiresAt.setDate(expiresAt.getDate() + 15)
@@ -86,3 +86,27 @@ export async function refreshService (userId: number, refreshToken: string) {
     throw new Error('Error inserting refresh token')
   }
 }
+
+
+export async function findRefreshService (userId: number, refreshToken: string) {
+  try {
+    const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM refresh_tokens WHERE token = ? AND user_id = ?', [refreshToken, userId])
+    
+    if (rows.length === 0){
+      return null // devuelve null y no error como los otros, porque tranquilamente puede no haber refresh / expirado
+    }
+
+    const expirationDate = rows[0]!.expired_at
+    if (expirationDate < new Date){
+      return null
+    }
+
+    return rows[0]
+
+  } catch (error){
+    console.error('Error finding refresh token', error)
+    throw new Error('Error finding refresh token')
+  }
+}
+
+
