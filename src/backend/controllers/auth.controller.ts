@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import { loginService, refreshService, registerService } from "../services/auth.services.js";
+import { loginService, insertRefreshService, registerService, findRefreshService, deleteRefreshTokenService } from "../services/auth.services.js";
 import { refreshTokenGenerator, tokenGenerator } from "../utils/jwt.js";
-import jwt from 'jsonwebtoken'
+import jwt, { type JwtPayload } from 'jsonwebtoken'
 
 export async function register (req: Request, res: Response) {
   try {
@@ -34,7 +34,7 @@ export async function login (req: Request, res: Response) {
     const accessToken = tokenGenerator(userId)
     const refreshToken = refreshTokenGenerator(userId)
 
-    await refreshService(userId, refreshToken)
+    await insertRefreshService(userId, refreshToken)
 
     return res.status(200).json({ accessToken, refreshToken })
  
@@ -42,5 +42,30 @@ export async function login (req: Request, res: Response) {
     console.error('Error en login: ', error)
 
     return res.status(401).json({ error: 'Error en login' })
+  }
+}
+
+export async function refresh (req: Request, res: Response) {
+  try {
+    const { refreshToken } = req.body
+    if (!refreshToken){
+      return res.status(401).json({ error: 'Error in refresh controller' })   
+    } 
+
+    const verifiedToken = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as JwtPayload
+    const userId = verifiedToken.userId
+    const dbToken = await findRefreshService(refreshToken, userId)
+
+    if (!dbToken){
+      return res.status(401).json({ error: 'Error in refresh controller' }) 
+    }
+    
+    await deleteRefreshTokenService(userId, refreshToken)  
+
+
+  } catch (error) {
+   console.error('Refresh token not found: ', error)
+   
+      return res.status(404).json({ error: 'Refresh token not found' })   
   }
 }

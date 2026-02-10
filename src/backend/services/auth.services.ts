@@ -109,7 +109,7 @@ export async function findRefreshService (userId: number, refreshToken: string) 
   }
 }
 
-export async function deleteRefreshToken (userId: number, refreshToken: string) {
+export async function deleteRefreshTokenService (userId: number, refreshToken: string) {
   try {
     await pool.query('DELETE FROM refresh_tokens WHERE token = ? AND user_id = ?', [refreshToken, userId])
 
