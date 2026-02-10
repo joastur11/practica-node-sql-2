@@ -60,9 +60,17 @@ export async function refresh (req: Request, res: Response) {
       return res.status(401).json({ error: 'Error in refresh controller' }) 
     }
     
-    await deleteRefreshTokenService(userId, refreshToken)  
+    await deleteRefreshTokenService(userId, refreshToken) // si existe y se verifica token, borra el token viejo  
 
+    const newAccessToken = tokenGenerator(userId)
+    const newRefreshToken = refreshTokenGenerator(userId) // crea nuevos
 
+    await insertRefreshService(userId, newRefreshToken)
+
+    return res.status(200).json({
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken
+    })
   } catch (error) {
    console.error('Refresh token not found: ', error)
    
