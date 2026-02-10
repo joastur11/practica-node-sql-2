@@ -63,7 +63,7 @@ export async function refresh (req: Request, res: Response) {
     await deleteRefreshTokenService(userId, refreshToken) // si existe y se verifica token, borra el token viejo  
 
     const newAccessToken = tokenGenerator(userId)
-    const newRefreshToken = refreshTokenGenerator(userId) // crea nuevos
+    const newRefreshToken = refreshTokenGenerator(userId) // crea nuevos para evitar tokens robados y sesiones infinitas
 
     await insertRefreshService(userId, newRefreshToken)
 
