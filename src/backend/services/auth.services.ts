@@ -3,7 +3,7 @@ import type { RegisterUser, LoggedUser, UserRow }  from "../types/types.js";
 import { pool } from "../db/connections.js";
 import bcrypt from 'bcrypt'
 
-export async function registerService ({email, password, name, surname}: RegisterUser){
+export async function registerService ({email, password, name, lastname}: RegisterUser){
   if(!email || typeof email != "string"){
     throw new Error('invalid email')
   }
@@ -13,8 +13,8 @@ export async function registerService ({email, password, name, surname}: Registe
   if(!name || typeof name != "string"){
     throw new Error('invalid name')
   }  
-  if(!surname || typeof surname != "string"){
-    throw new Error('invalid surname')
+  if(!lastname || typeof lastname != "string"){
+    throw new Error('invalid lastname')
   }
 
   const saltRounds = 10  
@@ -26,7 +26,7 @@ export async function registerService ({email, password, name, surname}: Registe
       throw new Error('email already in use')
     }
     
-    const [result] = await pool.query('INSERT INTO users (email, name, surname, password_hash) VALUES (?, ?, ?, ?)', [email, name, surname, hashedPassword])
+    const [result] = await pool.query('INSERT INTO users (email, name, lastname, password_hash) VALUES (?, ?, ?, ?)', [email, name, lastname, hashedPassword])
 
     const insertId = (result as any).insertId
 

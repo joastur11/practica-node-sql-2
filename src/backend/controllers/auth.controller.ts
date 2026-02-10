@@ -5,9 +5,9 @@ import jwt, { type JwtPayload } from 'jsonwebtoken'
 
 export async function register (req: Request, res: Response) {
   try {
-    const { email, password, name, surname } = req.body
+    const { email, password, name, lastname } = req.body
 
-    const newUserId = await registerService({ email, password, name, surname })
+    const newUserId = await registerService({ email, password, name, lastname })
 
     return res.status(201).json({ newUserId })
 

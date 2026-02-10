@@ -4,7 +4,7 @@ export type RegisterUser = {
   email: string,
   password: string,
   name: string,
-  surname: string
+  lastname: string
 }
 
 export type LoggedUser = {
