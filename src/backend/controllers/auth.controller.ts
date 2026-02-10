@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
-import { loginService, registerService } from "../services/auth.services.js";
-import { tokenGenerator } from "../utils/jwt.js";
+import { loginService, refreshService, registerService } from "../services/auth.services.js";
+import { refreshTokenGenerator, tokenGenerator } from "../utils/jwt.js";
+import jwt from 'jsonwebtoken'
 
 export async function register (req: Request, res: Response) {
   try {
@@ -30,9 +31,12 @@ export async function login (req: Request, res: Response) {
 
     const userId = await loginService({ email, password })
 
-    const token = tokenGenerator(userId)
+    const accessToken = tokenGenerator(userId)
+    const refreshToken = refreshTokenGenerator(userId)
 
-    return res.status(200).json({ token })
+    await refreshService(userId, refreshToken)
+
+    return res.status(200).json({ accessToken, refreshToken })
  
   } catch (error) {
     console.error('Error en login: ', error)
