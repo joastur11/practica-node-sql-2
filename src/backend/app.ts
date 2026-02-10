@@ -2,7 +2,6 @@ import express from 'express'
 import registerRoutes from './routes/register.js'
 import loginRoutes from './routes/login.js'
 import refreshRoutes from './routes/refresh.js'
-import 'dotenv/config'
 
 const app = express()
 

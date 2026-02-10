@@ -49,15 +49,15 @@ export async function refresh (req: Request, res: Response) {
   try {
     const { refreshToken } = req.body
     if (!refreshToken){
-      return res.status(401).json({ error: 'Error in refresh controller' })   
+      return res.status(401).json({ error: 'Refresh token not in request body' })   
     } 
 
     const verifiedToken = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as JwtPayload
     const userId = verifiedToken.userId
-    const dbToken = await findRefreshService(refreshToken, userId)
+    const dbToken = await findRefreshService(userId, refreshToken)
 
     if (!dbToken){
-      return res.status(401).json({ error: 'Error in refresh controller' }) 
+      return res.status(401).json({ error: 'Refresh token not in DB' }) 
     }
     
     await deleteRefreshTokenService(userId, refreshToken) // si existe y se verifica token, borra el token viejo  

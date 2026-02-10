@@ -21,7 +21,7 @@ export async function registerService ({email, password, name, lastname}: Regist
   const hashedPassword = await bcrypt.hash(password, saltRounds)
 
   try {
-    const [rows] = await pool.query<RowDataPacket[]>('SELECT user_id FROM users WHERE user_email = ?', [email])
+    const [rows] = await pool.query<RowDataPacket[]>('SELECT user_id FROM users WHERE email = ?', [email])
     if (rows.length > 0){
       throw new Error('email already in use')
     }
@@ -32,9 +32,9 @@ export async function registerService ({email, password, name, lastname}: Regist
 
     return insertId
 
-  } catch (error) {
-    console.error('Error fetching user', error)
-    throw new Error('Error fetching user')
+  } catch (error: any) {
+    console.error('DB error message:', error.message)
+    throw error
   }
 }
 
@@ -47,7 +47,7 @@ export async function loginService ({ email, password }: LoggedUser){
   }
   
   try {
-    const [rows] = await pool.query<UserRow[]>('SELECT user_id, password_hash FROM users WHERE user_email = ?', [email])
+    const [rows] = await pool.query<UserRow[]>('SELECT user_id, password_hash FROM users WHERE email = ?', [email])
     if (rows.length === 0){
       throw new Error('Invalid credentials')
     }
@@ -90,7 +90,7 @@ export async function insertRefreshService (userId: number, refreshToken: string
 
 export async function findRefreshService (userId: number, refreshToken: string) {
   try {
-    const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM refresh_tokens WHERE token = ? AND user_id = ?', [refreshToken, userId])
+    const [rows] = await pool.query<RowDataPacket[]>('SELECT * FROM refresh_tokens WHERE user_id = ? AND token = ? ', [userId, refreshToken ])
     
     if (rows.length === 0){
       return null // devuelve null y no error como los otros, porque tranquilamente puede no haber refresh / expirado
