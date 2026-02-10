@@ -109,4 +109,12 @@ export async function findRefreshService (userId: number, refreshToken: string) 
   }
 }
 
+export async function deleteRefreshToken (userId: number, refreshToken: string) {
+  try {
+    await pool.query('DELETE FROM refresh_tokens WHERE token = ? AND user_id = ?', [refreshToken, userId])
 
+  } catch (error) {
+    console.error('Error deleting refresh token', error)
+    throw new Error('Error deleting refresh token')
+  }
+}
