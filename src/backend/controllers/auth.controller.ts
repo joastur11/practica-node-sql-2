@@ -57,7 +57,7 @@ export async function refresh (req: Request, res: Response) {
     const dbToken = await findRefreshService(userId, refreshToken)
 
     if (!dbToken){
-      return res.status(401).json({ error: 'Refresh token not in DB' }) 
+      return res.status(500).json({ error: 'Refresh token not in DB' }) 
     }
     
     await deleteRefreshTokenService(userId, refreshToken) // si existe y se verifica token, borra el token viejo  
@@ -72,8 +72,30 @@ export async function refresh (req: Request, res: Response) {
       refreshToken: newRefreshToken
     })
   } catch (error) {
-   console.error('Refresh token not found: ', error)
-   
-      return res.status(404).json({ error: 'Refresh token not found' })   
+    console.error('Refresh token not found: ', error)   
+    return res.status(404).json({ error: 'Refresh token not found' })   
+  }
+}
+
+export async function logout (req: Request, res: Response){
+  try {
+    const { refreshToken } = req.body
+    if (!refreshToken){
+      return res.status(401).json({ error: 'Refresh token not in request body' })   
+    } 
+
+    const verifiedToken = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as JwtPayload
+    const userId = verifiedToken.userId
+
+    if (!verifiedToken){
+      return res.status(500).json({ error: 'Refresh token not in DB' }) 
+    }
+
+    await deleteRefreshTokenService(userId, refreshToken)
+
+    return res.status(200).json({ message: 'Logout exitoso' })
+  } catch (error) {
+    console.error('Error en logout: ', error)
+    return res.status(401).json({ error: 'Error en logout' })
   }
 }
