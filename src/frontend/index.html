@@ -7,7 +7,21 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
   </head>
   <body>
-        
-    <script src='index.js'></script>
+    <div id="register-view">
+      <label> Email </label>
+      <input type="email" />
+      <label style="display: none;"> Nombre </label>
+      <input style="display: none;" type="text" />
+      <label style="display: none;"> Apellido </label>
+      <input style="display: none;" type="text"/>
+      <label> Password </label>
+      <input type="password"/>
+      <button>Ingresar</button>
+      <button>Registrarse</button>
+    </div>
+    <div id="profile-view" style="display: none;">
+      <p> Estas loggeado! </p>
+    </div>
+    <script src='main.ts'></script> <!-- dsp va el dist .js -->
   </body>
 </html>
