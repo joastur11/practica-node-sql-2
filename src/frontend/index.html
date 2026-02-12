@@ -7,21 +7,29 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
   </head>
   <body>
-    <div id="register-view">
+    <div id="login-view">
       <label> Email </label>
-      <input type="email" />
+      <input type="email" id="email" />
       <label style="display: none;"> Nombre </label>
-      <input style="display: none;" type="text" />
+      <input style="display: none;" type="text"  id="name" />
       <label style="display: none;"> Apellido </label>
-      <input style="display: none;" type="text"/>
+      <input style="display: none;" type="text" id="lastname"/>
       <label> Password </label>
-      <input type="password"/>
-      <button>Ingresar</button>
-      <button>Registrarse</button>
+      <input type="password" id="password"/>
+      <button id="login-btn">Ingresar</button>
+      <button id="register-btn">Registrarse</button>
+      <button style="display: none;" id="create-account-btn">Crear cuenta</button>
     </div>
     <div id="profile-view" style="display: none;">
       <p> Estas loggeado! </p>
+      <button id="profile-btn">Ver Perfil</button>
+      <button id="logout-btn">Logout</button>
+      <div style="display: none;" id="profile-data">
+        <p><strong>Nombre:</strong> <span id="profile-name"> <!-- --> </span></p>
+        <p><strong>Apellido:</strong> <span id="profile-lastname"> <!-- --> </span></p>
+        <p><strong>Email:</strong> <span id="profile-email"> <!-- --> </span></p>
+      </div>
     </div>
-    <script src='main.ts'></script> <!-- dsp va el dist .js -->
+    <script src='main.js'></script> <!-- dsp va el dist .js -->
   </body>
 </html>
