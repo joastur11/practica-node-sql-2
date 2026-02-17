@@ -11,3 +11,5 @@ const registerBtn = document.querySelector('#register-btn')
 const profielBtn = document.querySelector('#profile-btn')
 const logoutBtn = document.querySelector('#logout-btn')
 
+let isRegisterMode = false
+
