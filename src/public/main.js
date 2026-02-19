@@ -176,3 +176,22 @@ profileBtn.addEventListener('click', async () => {
   profileLastname.innerText = data.lastname
   profileEmail.innerText = data.email
 })
+
+// logout
+
+logoutBtn.addEventListener('click', async () => {
+  const refreshToken = localStorage.getItem('refreshToken')
+
+  await fetch('/logout', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ refreshToken })
+  })
+
+  localStorage.removeItem('accessToken')
+  localStorage.removeItem('refreshToken')
+
+  window.location.reload()
+})
