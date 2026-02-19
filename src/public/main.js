@@ -69,7 +69,34 @@ atrasBtn.addEventListener('click', () => {
   }
 })
 
+async function registerFetch(email, password, name, lastname) {
+  const response = await fetch('/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      email, password, name, lastname
+    })
+  })
 
+  if (!response.ok) {
+    return console.log('registro incorrecto')
+  }
+
+  const data = await response.json()
+
+  return console.log(`Registro exitoso, ID: ${data}`)
+}
+
+createAccountBtn.addEventListener('click', async () => {
+  const name = nameInput.value
+  const lastname = lastnameInput.value
+  const email = emailInput.value
+  const password = passwordInput.value
+
+  await registerFetch(email, password, name, lastname)
+})
 
 // login
 
