@@ -18,6 +18,10 @@ const atrasBtn = document.querySelector('#atras-btn')
 
 let isRegisterMode = false
 
+let token = null
+
+// register 
+
 registerBtn.addEventListener('click', () => {
   isRegisterMode = !isRegisterMode
 
@@ -41,7 +45,33 @@ registerBtn.addEventListener('click', () => {
   }
 })
 
-let token = null
+atrasBtn.addEventListener('click', () => {
+  isRegisterMode = !isRegisterMode
+
+  if (!isRegisterMode) {
+    nameInput.classList.add("hidden")
+    lastnameInput.classList.add("hidden")
+    nameLabel.classList.add("hidden")
+    lastnameLabel.classList.add("hidden")
+    loginBtn.classList.remove("hidden")
+    createAccountBtn.classList.add("hidden")
+    atrasBtn.classList.add('hidden')
+    registerBtn.classList.remove('hidden')
+  } else {
+    nameInput.classList.remove("hidden")
+    lastnameInput.classList.remove("hidden")
+    nameLabel.classList.remove("hidden")
+    lastnameLabel.classList.remove("hidden")
+    loginBtn.classList.add("hidden")
+    registerBtn.classList.add('hidden')
+    createAccountBtn.classList.remove("hidden")
+    atrasBtn.classList.remove('hidden')
+  }
+})
+
+
+
+// login
 
 async function loginFetch(email, password) {
   const response = await fetch('/login', {
@@ -73,5 +103,3 @@ loginBtn.addEventListener('click', async () => {
 
   await loginFetch(email, password)
 })
-
-
