@@ -16,6 +16,12 @@ const logoutBtn = document.querySelector('#logout-btn')
 const createAccountBtn = document.querySelector('#create-account-btn')
 const atrasBtn = document.querySelector('#atras-btn')
 
+const profileData = document.querySelector('#profile-data')
+const profileName = document.querySelector('#profile-name')
+const profileLastname = document.querySelector('#profile-lastname')
+const profileEmail = document.querySelector('#profile-email')
+
+
 let isRegisterMode = false
 
 let token = null
@@ -117,6 +123,10 @@ async function loginFetch(email, password) {
 
   const data = await response.json()
   token = data.accessToken
+  const refreshToken = data.refreshToken
+
+  localStorage.setItem("accessToken", token)
+  localStorage.setItem("refreshToken", refreshToken)
 
   loginView.classList.add("hidden")
   profileView.classList.remove("hidden")
@@ -129,4 +139,40 @@ loginBtn.addEventListener('click', async () => {
   const password = passwordInput.value
 
   await loginFetch(email, password)
+})
+
+// profile page
+
+async function profileFetch() {
+  const token = localStorage.getItem('accessToken')
+
+  const response = await fetch('/profile', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+
+  if (!response.ok) {
+    console.log('No autorizado')
+    return
+  }
+
+  const data = await response.json()
+
+  return data
+}
+
+profileBtn.addEventListener('click', async () => {
+  const data = await profileFetch()
+
+  if (!data) {
+    alert('No autorizado o token inválido')
+    return
+  }
+
+  profileData.classList.remove('hidden')
+  profileName.innerText = data.name
+  profileLastname.innerText = data.lastname
+  profileEmail.innerText = data.email
 })
