@@ -3,14 +3,17 @@ import registerRoutes from './routes/register.js'
 import loginRoutes from './routes/login.js'
 import refreshRoutes from './routes/refresh.js'
 import logoutRoutes from './routes/logout.js'
+import { corsMiddleware } from './middlewares/corsMiddleware.js'
 
 const app = express()
 
 app.use(express.json())
 
-app.get('/', (req, res) =>{
-  res.send('Api funcionando!!')
-})
+app.use(corsMiddleware())
+
+app.use(express.static('src/public'))
+
+app.disable('x-powered-by')
 
 app.use('/register', registerRoutes)
 
