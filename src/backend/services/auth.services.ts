@@ -96,8 +96,8 @@ export async function findRefreshService (userId: number, refreshToken: string) 
       return null // devuelve null y no error como los otros, porque tranquilamente puede no haber refresh / expirado
     }
 
-    const expirationDate = rows[0]!.expired_at
-    if (expirationDate < new Date){
+    const expirationDate = rows[0]!.expires_at
+    if (expirationDate < new Date()){
       return null
     }
 
