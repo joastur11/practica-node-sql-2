@@ -41,22 +41,37 @@ registerBtn.addEventListener('click', () => {
   }
 })
 
-loginBtn.addEventListener('click', () => {
-  const email = emailInput.value
-  const password = passwordInput.value
-
-  console.log(email, password)
-})
-
+let token = null
 
 async function loginFetch(email, password) {
-  await fetch('http://localhost:1234/login', {
+  const response = await fetch('/login', {
     method: 'POST',
     headers: {
-      'Content type': 'application/json'
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       email, password
     })
   })
+
+  if (!response.ok) {
+    return console.log('credenciales incorrectas')
+  }
+
+  const data = await response.json()
+  token = data.accessToken
+
+  loginView.classList.add("hidden")
+  profileView.classList.remove("hidden")
+
+  return token// auth token y refresh token
 }
+
+loginBtn.addEventListener('click', async () => {
+  const email = emailInput.value
+  const password = passwordInput.value
+
+  await loginFetch(email, password)
+})
+
+
