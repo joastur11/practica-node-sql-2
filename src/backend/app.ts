@@ -26,8 +26,4 @@ app.use('/logout', logoutRoutes)
 
 app.use('/profile', profileRoutes)
 
-const PORT = 1234
-
-app.listen(PORT, () => {
-  console.log(`App listening on port: http://localhost:${PORT}`)
-})
+export default app
