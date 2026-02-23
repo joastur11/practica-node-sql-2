@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx src/backend/app.ts"
+    "test": "cross-env NODE_ENV=test jest",
+    "dev": "tsx src/backend/server.ts"
   },
   "repository": {
     "type": "git",
