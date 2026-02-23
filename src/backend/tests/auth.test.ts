@@ -1,11 +1,12 @@
 jest.mock('../services/auth.services.js', () => ({
   loginService: jest.fn(),
+  registerService: jest.fn(),
   insertRefreshService: jest.fn().mockResolvedValue(undefined),
 }))
 
 import request from 'supertest'
 import app from '../app.js'
-import { loginService } from '../services/auth.services.js'
+import { loginService, registerService } from '../services/auth.services.js'
 
 describe('Auth endpoints', () => {
 
@@ -19,7 +20,6 @@ describe('Auth endpoints', () => {
   // test login
 
   describe('POST /login', () => {
-
     // credenciales validas
     it('should return 200 and jwt tokens when credentials are valid', async () => {
       (loginService as jest.Mock).mockResolvedValue(123)
@@ -52,4 +52,28 @@ describe('Auth endpoints', () => {
     })
   })
   
+  // test register
+
+  describe('POST /register', () => {
+    // registro exitoso
+    it('should return 201 and new user id if register was succesfull', async () =>{
+      (registerService as jest.Mock).mockResolvedValue(123)
+
+      const response = await request(app)
+      .post('/register')
+      .send({
+        email: 'asd@asd.com',
+        password: 'asd',
+        name: 'asd',
+        lastname: 'asd'
+      })
+
+      expect(response.status).toBe(201)
+      expect(response.body.newUserId).toBeDefined()
+    })
+    
+
+  })
+
+
 })
