@@ -8,3 +8,8 @@
 - Registro y login con validación de credenciales
 - Logout con invalidación de refresh token en DB
 - Un frontend basico y funcional, solo para testear
+
+# Practica Jest
+
+- Agregue unos testeos del back con Jest, llegando a un 67% de coverage
+(flojo pero no testie services, solo controllers)
