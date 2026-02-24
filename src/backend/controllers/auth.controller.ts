@@ -87,7 +87,9 @@ export async function logout (req: Request, res: Response){
     const verifiedToken = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as JwtPayload
     const userId = verifiedToken.userId
 
-    if (!verifiedToken){
+    const dbToken = await findRefreshService(userId, refreshToken)
+
+    if (!dbToken){
       return res.status(500).json({ error: 'Refresh token not in DB' }) 
     }
 
@@ -96,6 +98,6 @@ export async function logout (req: Request, res: Response){
     return res.status(200).json({ message: 'Logout exitoso' })
   } catch (error) {
     console.error('Error en logout: ', error)
-    return res.status(401).json({ error: 'Error en logout' })
+    return res.status(404).json({ error: 'Error en logout' })
   }
 }
