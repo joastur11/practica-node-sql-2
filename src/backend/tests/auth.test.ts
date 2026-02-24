@@ -188,4 +188,64 @@ describe('Auth endpoints', () => {
   })
 
   // test logout
+  describe('POST /logout', () => {
+    // no refresh token in body
+    it('should return 401 if not there is no refresh token in req body', async () => {
+      const response = await request(app)
+      .post('/logout')
+      .send({
+        refreshToken: null
+      })
+
+      expect(response.status).toBe(401)
+    })
+
+    // token valido pero no en la db
+    it('should return 500 if the token is not in the db', async () => {
+      ;(jwt.verify as jest.Mock).mockReturnValue({ userId: 123 })
+      ;(findRefreshService as jest.Mock).mockResolvedValue(null)
+
+      const response = await request(app)
+      .post('/logout')
+      .send({
+        refreshToken: 'asd123'
+      })
+
+      expect(response.status).toBe(500)
+    })
+
+    // logout exitoso
+    it('should return 200 if the logout was succesfull', async () => {
+      ;(jwt.verify as jest.Mock).mockReturnValue({ userId: 123 })
+      ;(findRefreshService as jest.Mock).mockResolvedValue({
+        userId: 123,
+        refreshToken: '1234'
+      })
+      ;(deleteRefreshTokenService as jest.Mock).mockResolvedValue(undefined)
+
+      const response = await request(app)
+        .post('/logout')
+        .send({
+          refreshToken: '1234'
+        })
+
+      expect(response.status).toBe(200)
+    })
+
+    // token invalido
+    it('should return 404 if the refresh token is invalid', async () => {
+      ;(jwt.verify as jest.Mock).mockImplementation(() => {
+        throw new Error('invalid token')
+      })
+      const response = await request(app)
+      .post('/logout')
+      .send({
+        refreshToken: 'invalidtoken'
+      })
+
+      expect(response.status).toBe(404)
+    })
+    
+
+  })
 })
